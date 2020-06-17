@@ -16,19 +16,35 @@ ReactDOM.render(
 function uploadFile(file) {
   const request = {
     // content-type header should not be specified!
-    mode: 'no-cors',
     method: 'POST',
-    body: file,
+    body: file
   };
 
-  fetch('http://127.0.0.1:5000/', request);
+  var stringVal = ""
+  var finalObj
+  fetch('http://127.0.0.1:5000/', request)
+  .then(response => response.json())
+  .then(result => {
+    console.log('Success:', result);
+    stringVal += result
+    console.log('String Val:', stringVal);
+    document.getElementById("information").value = JSON.stringify(result);
+
+  })
+  
+
+  
+  return stringVal
+  
     
  
 }
 
 
 function FileDropzone() {
+  var label = ""
   const onDrop = useCallback((acceptedFiles) => {
+    console.log(acceptedFiles)
     acceptedFiles.forEach((file) => {
       const reader = new FileReader()
       reader.fileName = file.name
@@ -37,18 +53,20 @@ function FileDropzone() {
       reader.onerror = () => console.log('file reading has failed')
       const form = new FormData()
       form.append('file',file)
-      uploadFile(form)
+      label = uploadFile(form)
       reader.readAsArrayBuffer(file)
     })
     
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
+  document.getElementById("information").value = label 
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
          <p>Drag 'n' drop some files here, or click to select files</p>
+  
     </div>
+    
   )
 }
 

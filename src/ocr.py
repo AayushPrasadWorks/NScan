@@ -15,6 +15,7 @@ def has_digit(string):
 def print_json(im):
     objs = pytesseract.image_to_string(im)
     file = StringIO(objs)
+    print(objs)
     list = file.readlines()
     new_list = []
     index = 0
