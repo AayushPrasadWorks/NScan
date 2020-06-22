@@ -1,4 +1,4 @@
-import React, {useRef,createRef,useCallback} from 'react';
+import React, {useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -13,6 +13,13 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+function drop(evt) {
+  evt.stopPropagation();
+  evt.preventDefault(); 
+  var imageUrl = evt.dataTransfer.getData('URL');
+  alert(imageUrl);
+}
+
 function uploadFile(file) {
   const request = {
     // content-type header should not be specified!
@@ -25,26 +32,33 @@ function uploadFile(file) {
   fetch('http://127.0.0.1:5000/', request)
   .then(response => response.json())
   .then(result => {
-    console.log('Success:', result);
-    stringVal += result
-    console.log('String Val:', stringVal);
-    document.getElementById("information").value = JSON.stringify(result);
 
-  })
-  
+    var x = document.getElementsByTagName("td");
+    x.item(0).innerHTML = result.servings_info
+    x.item(1).innerHTML = result.Calories
+    x.item(2).innerHTML = result.Protein.grams
+    x.item(3).innerHTML = result.Trans_Fat.grams
+    x.item(4).innerHTML = result.Total_Sugars.grams
+    x.item(5).innerHTML = result.Sodium.grams
+    x.item(6).innerHTML = result.Vitamin_D.grams
+    x.item(7).innerHTML = result.Dietary_Fiber.grams
+    x.item(8).innerHTML = result.Calcium.grams
+    x.item(9).innerHTML = result.Total_Carbohydrate.grams
+    x.item(10).innerHTML = result.Iron.grams
+    x.item(11).innerHTML = result.Potassium.grams
 
-  
-  return stringVal
-  
+    //document.getElementById("information").value = JSON.stringify(result);
     
+
+
+  })  
  
 }
 
 
 function FileDropzone() {
-  var label = ""
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles)
+  const onDrop = useCallback((acceptedFiles, getInputProps) => {
+    console.log("ACCEPTED: "+getInputProps)
     acceptedFiles.forEach((file) => {
       const reader = new FileReader()
       reader.fileName = file.name
@@ -53,16 +67,18 @@ function FileDropzone() {
       reader.onerror = () => console.log('file reading has failed')
       const form = new FormData()
       form.append('file',file)
-      label = uploadFile(form)
+      uploadFile(form)
+      
       reader.readAsArrayBuffer(file)
     })
     
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-  document.getElementById("information").value = label 
+  //document.getElementById("information").value = label 
   return (
-    <div {...getRootProps()}>
+    <div {...getRootProps()} className="drop-zone">
       <input {...getInputProps()} />
+         <script>console.log(...getInputProps())</script>
          <p>Drag 'n' drop some files here, or click to select files</p>
   
     </div>

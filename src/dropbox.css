@@ -1,0 +1,7 @@
+.drop-zone {
+    padding: 5rem;
+    text-align: center;
+    background: #10F;
+    border-radius: 0.5rem;
+    box-shadow: 5px 5px 10px #C0C0;
+}

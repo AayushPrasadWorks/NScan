@@ -15,7 +15,7 @@ def upload():
        print(f)
        fstr = request.files['file'].read()
        npimg = np.frombuffer(fstr, dtype='int8')
-       img = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
+       img = cv2.imdecode(npimg, cv2.IMREAD_UNCHANGED)
        json = ocr.print_json(img)
        print(json)
        return json
