@@ -13,12 +13,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function drop(evt) {
-  evt.stopPropagation();
-  evt.preventDefault(); 
-  var imageUrl = evt.dataTransfer.getData('URL');
-  alert(imageUrl);
-}
+
 
 function uploadFile(file) {
   const request = {
@@ -27,8 +22,7 @@ function uploadFile(file) {
     body: file
   };
 
-  var stringVal = ""
-  var finalObj
+  
   fetch('http://127.0.0.1:5000/', request)
   .then(response => response.json())
   .then(result => {
@@ -57,28 +51,32 @@ function uploadFile(file) {
 
 
 function FileDropzone() {
-  const onDrop = useCallback((acceptedFiles, getInputProps) => {
-    console.log("ACCEPTED: "+getInputProps)
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader()
-      reader.fileName = file.name
-      console.log(reader.fileName)
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
-      const form = new FormData()
-      form.append('file',file)
-      uploadFile(form)
+  var url;
+  const onDrop = useCallback((acceptedFiles) => {
+    console.log("ACCEPTED: "+acceptedFiles[acceptedFiles.length-1].name)
+    const reader = new FileReader()
+    reader.readAsArrayBuffer(acceptedFiles[acceptedFiles.length-1])
+    reader.fileName = acceptedFiles[acceptedFiles.length-1].name
+    console.log(reader.fileName)
+    reader.onabort = () => console.log('file reading was aborted')
+    reader.onerror = () => console.log('file reading has failed')
+    reader.onload = function(){
+      url = reader.result;
+      reader.readAsDataURL(acceptedFiles[acceptedFiles.length-1]);
+      document.getElementById("Image").src = url
       
-      reader.readAsArrayBuffer(file)
-    })
+    };
+    const form = new FormData()
+    form.append('file',acceptedFiles[acceptedFiles.length-1])
+    uploadFile(form)
+    
+    
     
   }, [])
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-  //document.getElementById("information").value = label 
   return (
     <div {...getRootProps()} className="drop-zone">
       <input {...getInputProps()} />
-         <script>console.log(...getInputProps())</script>
          <p>Drag 'n' drop some files here, or click to select files</p>
   
     </div>

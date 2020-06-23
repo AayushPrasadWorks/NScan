@@ -25,7 +25,7 @@ def print_json(im):
     protein_obj = {'Protein': {'grams': "", 'daliy_val': ""}}
 
     nutrition_facts_object = {
-        'servings info': "",
+        'servings_info': "",
         'Calories': "",
         'Protein': {'grams': "", 'daily_val': ""},
         'Trans Fat': {'grams': "", 'daily_val': ""},
@@ -57,7 +57,7 @@ def print_json(im):
     bool = True
     for int in final_list:
         if int.lower().__contains__("serving size") or int.lower().startswith("serving"):
-            nutrition_facts_object['servings info'] = int
+            nutrition_facts_object['servings_info'] = int
             final_list.remove(int)
         else:
             if int.startswith("Calories"):
