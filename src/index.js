@@ -55,17 +55,30 @@ function FileDropzone() {
   const onDrop = useCallback((acceptedFiles) => {
     console.log("ACCEPTED: "+acceptedFiles[acceptedFiles.length-1].name)
     const reader = new FileReader()
-    reader.readAsArrayBuffer(acceptedFiles[acceptedFiles.length-1])
+    
     reader.fileName = acceptedFiles[acceptedFiles.length-1].name
     console.log(reader.fileName)
     reader.onabort = () => console.log('file reading was aborted')
     reader.onerror = () => console.log('file reading has failed')
-    reader.onload = function(){
+    
+    url = reader.result;
+    document.getElementById("Image").src = url
+    const preview = document.querySelector('img');
+    const file = acceptedFiles[acceptedFiles.length-1]
+    reader.addEventListener("load", function () {
+      preview.src = reader.result;
+    }, false);
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    /*reader.onload = function(){
       url = reader.result;
       reader.readAsDataURL(acceptedFiles[acceptedFiles.length-1]);
-      document.getElementById("Image").src = url
       
-    };
+      
+    };*/
+
     const form = new FormData()
     form.append('file',acceptedFiles[acceptedFiles.length-1])
     uploadFile(form)
@@ -78,7 +91,6 @@ function FileDropzone() {
     <div {...getRootProps()} className="drop-zone">
       <input {...getInputProps()} />
          <p>Drag 'n' drop some files here, or click to select files</p>
-  
     </div>
     
   )
