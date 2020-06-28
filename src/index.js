@@ -28,19 +28,36 @@ function uploadFile(file) {
   .then(result => {
 
     
-    var x = document.getElementsByTagName("td")
-    x.item(0).innerHTML = result.servings_info
-    x.item(1).innerHTML = result.Calories
-    x.item(2).innerHTML = result.Protein.grams
-    x.item(3).innerHTML = result.Trans_Fat.grams
-    x.item(4).innerHTML = result.Total_Sugars.grams
-    x.item(5).innerHTML = result.Sodium.grams
-    x.item(6).innerHTML = result.Vitamin_D.grams
-    x.item(7).innerHTML = result.Dietary_Fiber.grams
-    x.item(8).innerHTML = result.Calcium.grams
-    x.item(9).innerHTML = result.Total_Carbohydrate.grams
-    x.item(10).innerHTML = result.Iron.grams
-    x.item(11).innerHTML = result.Potassium.grams
+    var x = document.getElementById("insertion")
+    console.log(x.cells.length)
+    while(x.cells.length > 0){
+      x.deleteCell(-1)
+    }
+    var serving = x.insertCell(-1)
+    serving.innerHTML = result.servings_info
+    var cal = x.insertCell(-1)
+    cal.innerHTML = result.Calories
+    var protein = x.insertCell(-1)
+    protein.innerHTML = result.Protein.grams
+    var fat = x.insertCell(-1)
+    fat.innerHTML = result.Trans_Fat.grams
+    var sugar = x.insertCell(-1)
+    sugar.innerHTML = result.Total_Sugars.grams
+    var sodium = x.insertCell(-1)
+    sodium.innerHTML = result.Sodium.grams
+    var vd = x.insertCell(-1)
+    vd.innerHTML = result.Vitamin_D.grams
+    var fiber = x.insertCell(-1)
+    fiber.innerHTML = result.Dietary_Fiber.grams
+    var calc = x.insertCell(-1)
+    calc.innerHTML = result.Calcium.grams
+    var carb = x.insertCell(-1)
+    carb.innerHTML = result.Total_Carbohydrate.grams
+    var iron = x.insertCell(-1)
+    iron.innerHTML = result.Iron.grams
+    var potas = x.insertCell(-1)
+    potas.innerHTML = result.Potassium.grams
+
 
     //document.getElementById("information").value = JSON.stringify(result);
     
@@ -64,6 +81,7 @@ function FileDropzone() {
     
     url = reader.result;
     document.getElementById("Image").src = url
+    
     const preview = document.querySelector('img');
     const file = acceptedFiles[acceptedFiles.length-1]
     reader.addEventListener("load", function () {
