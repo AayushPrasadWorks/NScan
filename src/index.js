@@ -27,7 +27,8 @@ function uploadFile(file) {
   .then(response => response.json())
   .then(result => {
 
-    var x = document.getElementsByTagName("td");
+    
+    var x = document.getElementsByTagName("td")
     x.item(0).innerHTML = result.servings_info
     x.item(1).innerHTML = result.Calories
     x.item(2).innerHTML = result.Protein.grams
@@ -90,7 +91,7 @@ function FileDropzone() {
   return (
     <div {...getRootProps()} className="drop-zone">
       <input {...getInputProps()} />
-         <p>Drag 'n' drop some files here, or click to select files</p>
+         <p>Drag and drop an image</p>
     </div>
     
   )

@@ -15,6 +15,13 @@ def has_digit(string):
         else:
             return False
 def print_json(im):
+    ratio = im.shape[1] / im.shape[0]
+    ratio = round(ratio)
+    if not ratio == 2:
+        w = im.shape[0]
+        h = im.shape[0]*2
+        dim = (w,h)
+        im =  cv2.resize(im,dim,interpolation=cv2.INTER_AREA)
     objs = pytesseract.image_to_string(im)
     file = StringIO(objs)
     list = file.readlines()
@@ -87,3 +94,4 @@ def print_json(im):
             string = elm.replace(" ", "_")
             nutrition_facts_object[string] = nutrition_facts_object.pop(old)
     return json.dumps(nutrition_facts_object, indent=4)
+
